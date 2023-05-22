@@ -1,9 +1,3 @@
-'''
-Instrucciones: 
-1. Clonar el repositorio de GitHub: 
-2. Abrir cmd
-'''
-
 import mysql.connector
 import click #herramienta para poder ejecutar comandos en cmd para conexion a bd
 from flask import current_app, g #mantiene la aplicacion que estamos ejecutando y g: se le pueden asignar variables para despues accederlas desde otra parte de la aplicacion
@@ -16,27 +10,23 @@ app = Flask(__name__)
 
 instructions = [
     'SET FOREIGN_KEY_CHECKS=0;',
-    'DROP TABLE IF EXISTS todo;',
-    'DROP TABLE IF EXISTS user;',
-    'SET FOREIGN_KEY_CHECKS=1;',
-    """
-        CREATE TABLE `user` (
-            `id` INT PRIMARY KEY AUTO_INCREMENT,
-            `username` VARCHAR(50) UNIQUE NOT NULL,
-            `password` VARCHAR(100) NOT NULL
-        )
-    """,
-    """
-        CREATE TABLE `todo` (
-            `id` INT PRIMARY KEY AUTO_INCREMENT,
-            `created_by` INT NOT NULL,
-            `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `description` TEXT NOT NULL,
-            `completed` BOOLEAN NOT NULL,
-            FOREIGN KEY (`created_by`) REFERENCES `user`(`id`)
-        )
-    """
+    'CREATE TABLE IF NOT EXISTS `user` ('
+    '   `id` INT PRIMARY KEY AUTO_INCREMENT,'
+    '   `username` VARCHAR(50) UNIQUE NOT NULL,'
+    '   `password` VARCHAR(100) NOT NULL'
+    ');',
+    'CREATE TABLE IF NOT EXISTS `todo` ('
+    '   `id` INT PRIMARY KEY AUTO_INCREMENT,'
+    '   `created_by` INT NOT NULL,'
+    '   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,'
+    '   `description` TEXT NOT NULL,'
+    '   `completed` BOOLEAN NOT NULL,'
+    '   FOREIGN KEY (`created_by`) REFERENCES `user`(`id`)'
+    ');',
+    'SET FOREIGN_KEY_CHECKS=1;'
 ]
+
+
 
 '''Define el string de conexion por utilizar para la conexion a la base de datos'''
 def get_db():
